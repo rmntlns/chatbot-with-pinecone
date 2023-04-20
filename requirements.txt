@@ -1,0 +1,7 @@
+langchain
+openai
+tiktoken
+pinecone-client
+pinecone-text
+streamlit
+networkx
