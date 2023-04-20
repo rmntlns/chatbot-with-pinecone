@@ -59,6 +59,8 @@ pinecone_api = st.sidebar.text_input("Pinecone API Key", type="password")
 pinecone_env = st.sidebar.text_input("Pinecone Environment")
 pinecone_index = st.sidebar.text_input("Pinecone Index")
 MODEL = st.sidebar.selectbox("Model", ["gpt-3.5-turbo", "text-davinci-003"])
+max_tokens = st.sidebar.slider("Max Tokens", 40, 200, 50)
+temperature = st.sidebar.slider("Temperature", 0.0, 2.0, 0.5)
 
 if openai_api and pinecone_api and pinecone_env and pinecone_index:
 
@@ -70,7 +72,6 @@ if openai_api and pinecone_api and pinecone_env and pinecone_index:
         temperature=0, 
         openai_api_key=openai_api,
         model_name=MODEL,
-
         )
     
     # Create a ConversationEntityMemory object if not already created
@@ -116,7 +117,7 @@ if input_text:
     docs = docsearch.similarity_search(input_text, k=3)
 
     # Get Response
-    chain = load_qa_chain(OpenAI(temperature=0, openai_api_key=openai_api), chain_type="stuff", memory=st.session_state["entity_memory"], prompt=prompt, verbose=True)
+    chain = load_qa_chain(OpenAI(temperature=temperature, openai_api_key=openai_api, max_tokens=max_tokens), chain_type="stuff", memory=st.session_state["entity_memory"], prompt=prompt, verbose=True)
 
     # Generate the output using user input and store it in the session state
     output = chain({"input_documents": docs, "human_input": input_text}, return_only_outputs=True)
