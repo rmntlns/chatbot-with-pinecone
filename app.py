@@ -129,4 +129,4 @@ if input_text:
             st.success(st.session_state["generated"][i]['output_text'])
 
 # Create button to start a new chat
-st.sidebar.button("New Chat", on_click=new_chat, type="primary")
+st.sidebar.button("Wipe Memory", on_click=new_chat, type="primary")
